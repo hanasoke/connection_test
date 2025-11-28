@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -39,4 +40,22 @@ func main() {
 		log.Fatal("Ggal membuka koneksi:", err)
 	}
 	defer db.Close()
+
+	// Set connection pool settings
+	db.SetMaxOpenConns(25)
+	db.SetMaxIdleConns(25)
+	db.SetConnMaxLifetime(5 * time.Minute)
+
+	// Test connection
+	if err := db.Ping(); err != nil {
+		log.Fatal("Gagal ping database:", err)
+	}
+
+	fmt.Println("✅ Berhasil terhubung ke MySQL XAMPP!")
+
+	// Contoh operasi database
+	// createTable(db)
+	// insertTable(db)
+	// queryData(db)
+
 }
