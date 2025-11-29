@@ -17,7 +17,7 @@ type DatabaseConfig struct {
 	Database string
 }
 
-func main() {
+func maind() {
 	config := DatabaseConfig{
 		Username: "root",
 		Password: "", // Default XAMPP MySQL tanpa password
