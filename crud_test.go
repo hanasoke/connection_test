@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -31,6 +32,41 @@ func main() {
 
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	// Insert data
+	result, err := db.Exec(
+		"INSERT INTO users (name, email) VALUES (?, ?)",
+		"John Doe", "john@example.com",
+	)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	id, _ := result.LastInsertId()
+	fmt.Printf("Data inserted with ID: %d\n", id)
+
+	// Query data
+	rows, err := db.Query("SELECT id, name, email FROM users")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	var users []User
+	for rows.Next() {
+		var user User
+		err := rows.Scan(&user.ID, &user.Name, &user.Email)
+		if err != nil {
+			log.Fatal(err)
+		}
+		users = append(users, user)
+	}
+
+	fmt.Println("Data users:")
+	for _, user := range users {
+		fmt.Printf("ID: %d, Name: %s, Email: %s\n", user.ID, user.Name, user.Email)
 	}
 
 }
