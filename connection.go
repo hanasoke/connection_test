@@ -17,7 +17,7 @@ type DatabaseConfig struct {
 	Database string
 }
 
-func maind() {
+func main() {
 	config := DatabaseConfig{
 		Username: "root",
 		Password: "", // Default XAMPP MySQL tanpa password
@@ -37,7 +37,7 @@ func maind() {
 
 	db, err := sql.Open("mysql", connectionString)
 	if err != nil {
-		log.Fatal("Ggal membuka koneksi:", err)
+		log.Fatal("Gagal membuka koneksi:", err)
 	}
 	defer db.Close()
 
@@ -57,5 +57,4 @@ func maind() {
 	// createTable(db)
 	// insertTable(db)
 	// queryData(db)
-
 }
